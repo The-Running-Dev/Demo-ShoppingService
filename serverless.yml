@@ -1,0 +1,17 @@
+service: shopping-service
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+plugins:
+  - serverless-webpack
+
+functions:
+  GetSuggestion:
+    handler: shopping-service.GetSuggestion
+
+    events:
+     - http:
+        path: shopping
+        method: get

@@ -1,0 +1,54 @@
+{
+  "name": "shopping-service",
+  "version": "1.0.0",
+  "description": "Provides shopping suggestions based on a given location",
+  "main": "src/shopping-service.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "@types/aws-lambda": "0.0.14",
+    "@types/chai": "^4.0.1",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.7",
+    "@types/sinon": "^2.3.2",
+    "serverless-webpack": "^2.0.0",
+    "sinon": "^2.3.6",
+    "ts-loader": "^2.2.2",
+    "tslint": "^5.5.0",
+    "tslint-config-olo": "^0.1.0",
+    "typescript": "^2.4.1",
+    "webpack": "^3.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "karma": "^1.7.0",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^1.3.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-promise": "^0.1.0",
+    "karma-typescript-preprocessor2": "^1.2.1",
+    "karma-webpack": "^2.0.3",
+    "mocha": "^3.4.2",
+    "phantomjs-prebuilt": "^2.1.14"
+  },
+  "scripts": {
+    "lint": "tslint *.ts",
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/The-Running-Dev/Shopping-Service.git"
+  },
+  "keywords": [
+    "api",
+    "shopping",
+    "demo"
+  ],
+  "author": "Ben Richards",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/The-Running-Dev/Shopping-Service/issues"
+  },
+  "homepage": "https://github.com/The-Running-Dev/Shopping-Service#readme"
+}
