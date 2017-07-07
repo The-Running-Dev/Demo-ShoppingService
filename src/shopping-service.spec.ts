@@ -1,9 +1,10 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import { ClothesService } from './services/clothes.service';
+import { suggestWordrobe } from './shopping-service';
+
+import { WardrobeService } from './services/wordrobe.service';
 import { ErrorType } from './models/error-type.enum';
-import { Suggest } from './shopping-service';
 import { IEventPayload } from './models/payload.model';
 import { IResponsePayload } from './models/response-payload.model';
 import { ValidationError } from './models/validation-error.model';
@@ -31,11 +32,11 @@ describe('Suggest', () => {
     };
     before(function () {
         validationService = sinon.stub(ValidationService, 'ValidateZipCode');
-        clothesService = sinon.stub(ClothesService, 'GetSuggestion');
+        clothesService = sinon.stub(WardrobeService, 'GetSuggestion');
     });
 
     it('Should Return Error on Invalid Zip Code', done => {
-        Suggest(null, null, (error: ValidationError) => {
+        suggestWordrobe(null, null, (error: ValidationError) => {
             expect(error).to.not.be.undefined;
             expect(error.Type).to.be.equal(ErrorType.InvalidZipCode);
 
@@ -48,7 +49,7 @@ describe('Suggest', () => {
             ZipCode: '12345'
         };
 
-        Suggest(payload, null, (responsePayload: IResponsePayload) => {
+        suggestWordrobe(payload, null, (responsePayload: IResponsePayload) => {
             console.log(responsePayload);
             //expect(error).to.not.be.null;
 

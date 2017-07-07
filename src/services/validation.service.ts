@@ -1,8 +1,13 @@
-import { ErrorType } from '../models/error-type.enum';
+import { ErrorType, ErrorTypeMessage } from '../models/error-type.enum';
 import { ValidationError } from '../models/validation-error.model'
 import { ValidationResult } from '../models/validation-result.model';
 
+// Service to provide validation functions
+// used by the rest of the application
+// implemented as promises since validation can be asynchronous
 export class ValidationService {
+    // Validates the zip code for 0 length and number format of 12345
+    // with optional extended zip code -1234
     public ValidateZipCode(zipCode: string): Promise<ValidationResult> {
         let validateRegExp = new RegExp(/^\d{5}(-\d{4})?$/);
         let input = (zipCode != null) ? zipCode : '';
@@ -14,13 +19,16 @@ export class ValidationService {
             };
 
             if (!validationResult.IsValid) {
-                validationResult.Error = new ValidationError('Invalid Zip Code', ErrorType.InvalidZipCode);
+                validationResult.Error = new ValidationError(ErrorTypeMessage.InvalidZipCode, ErrorType.InvalidZipCode);
             }
 
             return resolve(validationResult);
         });
     }
 
+    // Validates latitude and longitude coordinates for valid values
+    // Latitude should be in the range of +/-90
+    // Longitude should be in the range of +/-180
     public ValidateCoordinates(lat: string, long: string): Promise<ValidationResult> {
         let latInput = (lat != null) ? lat : '';
         let longInput = (long != null) ? long : '';
@@ -38,15 +46,15 @@ export class ValidationService {
 
             if (!latIsValid && !longIsValid) {
                 validationResult.IsValid = false;
-                validationResult.Error = new ValidationError('Invalid Coordinates', ErrorType.InvalidCoordinates)
+                validationResult.Error = new ValidationError(ErrorTypeMessage.InvalidCoordinates, ErrorType.InvalidCoordinates)
             }
             else if (!latIsValid) {
                 validationResult.IsValid = false;
-                validationResult.Error = new ValidationError('Invalid Latitude', ErrorType.InvalidLatitude);
+                validationResult.Error = new ValidationError(ErrorTypeMessage.InvalidLatitude, ErrorType.InvalidLatitude);
             }
             else if (!longIsValid) {
                 validationResult.IsValid = false;
-                validationResult.Error = new ValidationError('Invalid Longitude', ErrorType.InvalidLongitude);
+                validationResult.Error = new ValidationError(ErrorTypeMessage.InvalidLongitude, ErrorType.InvalidLongitude);
             }
 
             return resolve(validationResult);

@@ -5,3 +5,11 @@ export enum ErrorType {
     InvalidLongitude = 3,
     Unknown = -1
 }
+
+export enum ErrorTypeMessage {
+    InvalidZipCode = 'Invalid Zip Code',
+    InvalidCoordinates = 'Invalid Coordinates',
+    InvalidLatitude = 'Invalid Latitude ',
+    InvalidLongitude = 'Invalid Longitude',
+    Unknown = 'Unknown'
+}

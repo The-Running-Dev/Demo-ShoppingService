@@ -1,19 +1,19 @@
 import * as chai from 'chai';
 
-import { ClothesService } from './clothes.service';
+import { WardrobeService } from './wordrobe.service';
 import { Season } from '../models/season.enum';
 import { WeatherService } from './weather.service';
 import { IResponsePayload } from '../models/response-payload.model';
 
 const expect = chai.expect;
 
-describe('ClothesService', () => {
+describe('WardrobeService', () => {
     const mockWeatherService = <WeatherService> {
         GetWeather(zipCode: string): Promise<IResponsePayload> {
             return Promise.resolve(<IResponsePayload>{});
         }
     };
-    let service = new ClothesService(mockWeatherService);
+    let service = new WardrobeService(mockWeatherService);
 
     it('Should Return a Spring Item', done => {
         let item = service.GetSpringItem()

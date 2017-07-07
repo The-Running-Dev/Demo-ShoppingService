@@ -7,6 +7,8 @@ import { OpenWeatherAPIKey } from '../.env';
 import { ValidationService } from './validation.service';
 import { IResponsePayload } from '../models/response-payload.model';
 
+// Provides weather related functions
+// by leveraging the OpenWeatherMap API
 export class WeatherService {
     public validationService: ValidationService;
     public locationService: LocationService;
@@ -16,6 +18,7 @@ export class WeatherService {
         this.locationService = locationService;
     }
 
+    // Gets the current weather based on the provided zip code
     public GetWeather(zipCode: string): Promise<IResponsePayload> {
         return new Promise((resolve: any, reject: any) => {
             this.locationService.GetLocation(zipCode).then((location: ILocation) => {

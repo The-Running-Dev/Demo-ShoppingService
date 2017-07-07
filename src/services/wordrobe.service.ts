@@ -3,15 +3,19 @@ import { IResponsePayload } from '../models/response-payload.model';
 import { WardrobeItem } from '../models/wardrobe-item.model';
 import { WeatherService } from './weather.service';
 
-export class ClothesService {
+// Provides wardrobe functions, such as suggestions based on the current weather
+// and random seasonal wardrobe items
+export class WardrobeService {
     public weatherService: WeatherService;
 
     constructor(weatherService: WeatherService) {
         this.weatherService = weatherService;
     }
 
+    // Get wardrobe item suggestion based on the given zip code
     public GetSuggestion(zipCode: string): Promise<IResponsePayload> {
         return new Promise((resolve: any) => {
+            // First get the weather for the zip code
             this.weatherService.GetWeather(zipCode).then((payload: IResponsePayload) => {
                 let temperature = parseInt(payload.Weather.temp);
 
@@ -51,6 +55,7 @@ export class ClothesService {
         return new WinterItem(this.GetRandomSeasonItem(WinterItem))
     }
 
+    // Gets a random wardrobe item from the provided season item enum
     public GetRandomSeasonItem(seasonItemEnum: any): string {
         let enumLength = (Object.keys(seasonItemEnum).length / 2) - 1;
         var item = Math.floor(Math.random() * enumLength) + 0;
