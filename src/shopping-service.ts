@@ -32,7 +32,7 @@ export function suggestWardrobe(payload: IEventPayload, context: Context, callba
 
             let payload: IResponsePayload = {
                 statusCode: 200,
-                body: apiPayload
+                body: JSON.stringify(apiPayload)
             };
 
             callback(null, payload);

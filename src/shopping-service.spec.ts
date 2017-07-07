@@ -50,7 +50,7 @@ describe('Suggest', () => {
 
         suggestWardrobe(payload, null, (error: any, response: IResponsePayload) => {
             response.should.not.be.null;
-            response.body.Message.should.not.be.empty;
+            response.body.should.not.be.empty;
 
             done();
         });
