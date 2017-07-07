@@ -9,15 +9,17 @@ import { ILocation } from '../models/location.model';
 import { IResponsePayload } from '../models/response-payload.model';
 
 const passThrough = require('stream').PassThrough;
-const http = require('http');
 const weatherMockData = require('../data/weather.json');
 const locationMockData = require('../data/location.json');
 
 const assert = chai.assert;
 
+let http = require('http');
+
 describe('WeatherService', () => {
     let httpRequest: any;
-    let weatherData = weatherMockData;
+    let zipCode = '12065';
+    let locationData = <ILocation>locationMockData[zipCode];
 
     const mockValidationService = <ValidationService> {
         ValidateCoordinates(lat: string, long: string): Promise<ValidationResult> {
@@ -26,32 +28,42 @@ describe('WeatherService', () => {
     };
     const mockLocationService = <LocationService> {
         GetLocation(zipCode: string): Promise<ILocation> {
-            return Promise.resolve(<ILocation>locationMockData);
+            return Promise.resolve(locationData);
         }
     };
     const service = new WeatherService(mockValidationService, mockLocationService);
 
-    before(function () {
+    it('Should Get Mock Weather Data', done => {
         httpRequest = sinon.stub(http, 'request');
-    });
-    after(function () {
-        http.request.restore();
-    });
 
-    it('Should Get Weather Data', done => {
         let response = new passThrough();
-        response.write(JSON.stringify(weatherData));
+        response.write(JSON.stringify(weatherMockData));
         response.end();
 
         let request = new passThrough();
         httpRequest.callsArgWith(1, response).returns(request);
 
-        service.GetWeather('12345').then((payload: IResponsePayload) => {
+        service.GetWeather(zipCode).then((payload: IResponsePayload) => {
             httpRequest.called.should.be.equal(true);
             payload.should.not.be.empty;
-            assert.deepEqual(payload.Weather, weatherData.list[0].main);
+            assert.deepEqual(payload.Weather, weatherMockData.main);
+
+            done();
+            http.request.restore();
+        });
+    });
+
+    // Integration test
+    // un-comment to run against the real API
+    /*
+    it('Should Get Real Weather Data', done => {
+        service.GetWeather(zipCode).then((payload: IResponsePayload) => {
+            payload.Location.zip_code.should.be.equal(zipCode);
+            payload.should.not.be.empty;
+            payload.Weather.should.not.be.empty;
 
             done();
         });
     });
+    */
 });

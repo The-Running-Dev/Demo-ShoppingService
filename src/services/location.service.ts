@@ -17,7 +17,8 @@ export class LocationService {
                     data += chunk;
                 });
                 response.on('end', function () {
-                    resolve(<ILocation>(JSON.parse(data)));
+                    let jsonData = <any>JSON.parse(data);
+                    resolve(<ILocation>jsonData[zipCode]);
                 });
             }).on('error', response => {
                 reject(response);

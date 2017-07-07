@@ -2,13 +2,14 @@
 
 AWS lambda function that provides wardrobe suggestions based on the current weather in a location.
 
-== Demo
+Demo
 * Run from the web at
 
 == Running Locally
 1. Install the servless NPM package: ```npm i serverless -g```
 2. Install the NPM package: ```npm i demo-shopping-service```
-3. Run with serveless: ```serverless invoke -f suggest -l```
+3. Run with serveless: ```serverless invoke -f suggest -l -p .\src\data\payload.json```
+4. Run all tests: ```npm run test```
 
 == Technologies
 * [Webpack] (https://github.com/webpack/webpack) for compilation and bundling

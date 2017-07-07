@@ -11,11 +11,11 @@ import { WeatherService } from './services/weather.service';
 
 // Given a ZipCode, it gets the current weather
 // and suggests an item based on the temperature
-export function suggestWordrobe(payload: IEventPayload, context: Context, callback: ICallback) {
+export function suggestWardrobe(payload: IEventPayload, context: Context, callback: ICallback) {
     let input: IEventPayload = (payload != null) ? payload : {ZipCode: ''};
     let validationService = new ValidationService();
     let locationService = new LocationService();
-    let clothsService = new WardrobeService(new WeatherService(validationService, locationService));
+    let wardrobeService = new WardrobeService(new WeatherService(validationService, locationService));
 
     validationService.ValidateZipCode(input.ZipCode).then((validationResult: ValidationResult) => {
         if (!validationResult.IsValid) {
@@ -24,7 +24,10 @@ export function suggestWordrobe(payload: IEventPayload, context: Context, callba
             return;
         }
 
-        clothsService.GetSuggestion(input.ZipCode).then((payload: IResponsePayload) => {
+        console.log('validation passed');
+
+        wardrobeService.GetSuggestion(input.ZipCode).then((payload: IResponsePayload) => {
+            console.log('hjere');
             payload.Message = `How are things in ${payload.Location.city}?`;
             payload.Message += ` The current temperature is ${payload.Weather.temp} degrees.`
             payload.Message += ` ${payload.WardrobeItem.Season}, may we suggest ${payload.WardrobeItem.Name}`;

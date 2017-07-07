@@ -1,10 +1,10 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import { suggestWordrobe } from './shopping-service';
+import { suggestWardrobe } from './shopping-service';
 
 import { WardrobeService } from './services/wordrobe.service';
-import { ErrorType } from './models/error-type.enum';
+import { ErrorType, ErrorTypeMessage } from './models/error-type.enum';
 import { IEventPayload } from './models/payload.model';
 import { IResponsePayload } from './models/response-payload.model';
 import { ValidationError } from './models/validation-error.model';
@@ -16,8 +16,6 @@ const weatherMockData = require('./data/weather.json');
 const expect = chai.expect;
 
 describe('Suggest', () => {
-    let validationService: {};
-    let clothesService: {};
     let mockResponse: IResponsePayload = {
         Message: 'Hooray!',
         Location: {
@@ -27,31 +25,29 @@ describe('Suggest', () => {
             lat: '',
             lng: ''
         },
-        Weather: weatherMockData.list[0].main,
+        Weather: weatherMockData.main,
         WardrobeItem: new SummerItem('Sandals')
     };
-    before(function () {
-        validationService = sinon.stub(ValidationService, 'ValidateZipCode');
-        clothesService = sinon.stub(WardrobeService, 'GetSuggestion');
-    });
 
     it('Should Return Error on Invalid Zip Code', done => {
-        suggestWordrobe(null, null, (error: ValidationError) => {
+        suggestWardrobe(null, null, (error: ValidationError) => {
             expect(error).to.not.be.undefined;
-            expect(error.Type).to.be.equal(ErrorType.InvalidZipCode);
+            expect(error).to.be.equal(ErrorTypeMessage.InvalidZipCode);
 
             done();
         });
     });
 
     it('Should Get a Valid Suggestion', done => {
+        sinon.stub(ValidationService, 'ValidateZipCode').resolves(new ValidationResult());
+        sinon.stub(WardrobeService, 'GetSuggestion').resolves(mockResponse);
+
         let payload: IEventPayload = {
-            ZipCode: '12345'
+            ZipCode: '1245'
         };
 
-        suggestWordrobe(payload, null, (responsePayload: IResponsePayload) => {
-            console.log(responsePayload);
-            //expect(error).to.not.be.null;
+        suggestWardrobe(payload, null, (responsePayload: IResponsePayload) => {
+            expect(responsePayload).to.not.be.null;
 
             done();
         });

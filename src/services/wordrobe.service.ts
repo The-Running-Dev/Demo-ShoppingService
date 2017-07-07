@@ -14,6 +14,7 @@ export class WardrobeService {
 
     // Get wardrobe item suggestion based on the given zip code
     public GetSuggestion(zipCode: string): Promise<IResponsePayload> {
+        console.log('I should not be here');
         return new Promise((resolve: any) => {
             // First get the weather for the zip code
             this.weatherService.GetWeather(zipCode).then((payload: IResponsePayload) => {

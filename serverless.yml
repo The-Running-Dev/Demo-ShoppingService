@@ -9,9 +9,9 @@ plugins:
 
 functions:
   suggest:
-    handler: shopping-service.suggestWordrobe
+    handler: shopping-service.suggestWardrobe
     name: ${self:provider.stage}-lambda
-    description: Provides wordrobe suggestions based on a given location
+    description: Provides wardrobe suggestions based on a given location
 
     events:
      - http:

@@ -27,7 +27,7 @@ export class WeatherService {
                 this.validationService.ValidateCoordinates(location.lat, location.lng).then(() => {
                     var req = http.request({
                         host: `api.openweathermap.org`,
-                        path: `//data/2.5/weather?lat=${location.lat}&lon=${location.lng}&units=imperial&appid=${OpenWeatherAPIKey}`
+                        path: `/data/2.5/weather?lat=${location.lat}&lon=${location.lng}&units=imperial&appid=${OpenWeatherAPIKey}`
                     }, (response: any) => {
                         var data = '';
                         response.on('data', (chunk: any) => {
@@ -35,8 +35,7 @@ export class WeatherService {
                         });
                         response.on('end', function () {
                             let jsonData = <any>JSON.parse(data);
-                            payload.Weather = <IWeather>(jsonData.list[0].main);
-
+                            payload.Weather = <IWeather>(jsonData.main);
                             resolve(payload);
                         });
                     }).on('error', response => {
