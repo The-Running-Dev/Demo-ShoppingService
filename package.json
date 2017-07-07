@@ -1,5 +1,5 @@
 {
-  "name": "shopping-service",
+  "name": "demo-shopping-service",
   "version": "1.0.0",
   "description": "Provides shopping suggestions based on a given location",
   "main": "src/shopping-service.js",

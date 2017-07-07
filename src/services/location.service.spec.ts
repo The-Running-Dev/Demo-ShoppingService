@@ -13,7 +13,6 @@ const assert = chai.assert;
 describe('GetLocation', () => {
     let httpRequest: any;
     let zipCode = '12065';
-    let locationData = locationMockData;
     const service = new LocationService();
 
     before(function () {
@@ -25,7 +24,7 @@ describe('GetLocation', () => {
 
     it('Should Get Mock Location Data', done => {
         let response = new passThrough();
-        response.write(JSON.stringify(locationData));
+        response.write(JSON.stringify(locationMockData));
         response.end();
 
         let request = new passThrough();
@@ -34,7 +33,7 @@ describe('GetLocation', () => {
         service.GetLocation(zipCode).then((location: ILocation) => {
             httpRequest.called.should.be.equal(true);
             location.should.not.be.empty;
-            assert.deepEqual(location, locationData[zipCode]);
+            assert.deepEqual(location, locationMockData);
 
             done();
         });

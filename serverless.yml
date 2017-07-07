@@ -10,7 +10,7 @@ plugins:
 functions:
   suggest:
     handler: shopping-service.suggestWardrobe
-    name: ${self:provider.stage}-lambda
+    name: demo-shopping-service
     description: Provides wardrobe suggestions based on a given location
 
     events:

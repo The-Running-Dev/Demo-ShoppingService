@@ -10,15 +10,14 @@ export class LocationService {
         return new Promise((resolve: any, reject: any) => {
             var req = http.request({
                 host: `www.zipcodeapi.com`,
-                path: `/rest/${ZipCodeAPIKey}/multi-info.json/${zipCode}/degrees`
+                path: `/rest/${ZipCodeAPIKey}/info.json/${zipCode}/degree`
             }, (response: any) => {
                 var data = '';
                 response.on('data', (chunk: any) => {
                     data += chunk;
                 });
                 response.on('end', function () {
-                    let jsonData = <any>JSON.parse(data);
-                    resolve(<ILocation>jsonData[zipCode]);
+                    resolve(<ILocation><any>JSON.parse(data));
                 });
             }).on('error', response => {
                 reject(response);

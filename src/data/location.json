@@ -1,33 +1,31 @@
 {
-  "12065": {
-    "zip_code": "12065",
-    "lat": 42.852259,
-    "lng": -73.785502,
-    "city": "Clifton Park",
-    "state": "NY",
-    "timezone": {
-      "timezone_identifier": "America/New_York",
-      "timezone_abbr": "EDT",
-      "utc_offset_sec": -14400,
-      "is_dst": "T"
+  "zip_code": "12065",
+  "lat": 42.852259,
+  "lng": -73.785502,
+  "city": "Clifton Park",
+  "state": "NY",
+  "timezone": {
+    "timezone_identifier": "America\/New_York",
+    "timezone_abbr": "EDT",
+    "utc_offset_sec": -14400,
+    "is_dst": "T"
+  },
+  "acceptable_city_names": [
+    {
+      "city": "Clifton Park Center",
+      "state": "NY"
     },
-    "acceptable_city_names": [
-      {
-        "city": "Clifton Park Center",
-        "state": "NY"
-      },
-      {
-        "city": "Elnora",
-        "state": "NY"
-      },
-      {
-        "city": "Halfmoon",
-        "state": "NY"
-      },
-      {
-        "city": "Jonesville",
-        "state": "NY"
-      }
-    ]
-  }
+    {
+      "city": "Elnora",
+      "state": "NY"
+    },
+    {
+      "city": "Halfmoon",
+      "state": "NY"
+    },
+    {
+      "city": "Jonesville",
+      "state": "NY"
+    }
+  ]
 }

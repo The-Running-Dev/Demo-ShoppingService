@@ -19,7 +19,6 @@ let http = require('http');
 describe('WeatherService', () => {
     let httpRequest: any;
     let zipCode = '12065';
-    let locationData = <ILocation>locationMockData[zipCode];
 
     const mockValidationService = <ValidationService> {
         ValidateCoordinates(lat: string, long: string): Promise<ValidationResult> {
@@ -28,7 +27,7 @@ describe('WeatherService', () => {
     };
     const mockLocationService = <LocationService> {
         GetLocation(zipCode: string): Promise<ILocation> {
-            return Promise.resolve(locationData);
+            return Promise.resolve(locationMockData);
         }
     };
     const service = new WeatherService(mockValidationService, mockLocationService);
