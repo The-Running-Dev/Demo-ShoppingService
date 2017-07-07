@@ -1,83 +1,60 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import { ValidationError } from '../models/validation-error.model';
-import { LocationService } from './location.service';
 import { ILocation } from '../models/location.model';
-import { ValidationService } from './validation.service';
-import { request } from 'http';
-var proxyquire = require('proxyquire');
+import { LocationService } from './location.service';
+
+const passThrough = require('stream').PassThrough;
+const http = require('http');
 const locationMockData = require('../data/location.json');
 
-const expect = chai.expect;
 const assert = chai.assert;
 
 describe('GetLocation', () => {
-    const mockValidationService = <ValidationService> {
-        ValidateZipCode(zipCode: string): Promise<ValidationError> {
-            return null;
-        }
-    };
-    const service = new LocationService(mockValidationService);
-    let server: any;
-
-    var twitstat;
-    var request;
+    let httpRequest: any;
+    let locationData = JSON.stringify(locationMockData);
+    const service = new LocationService();
 
     before(function () {
-        request = sinon.stub();
-        twitstat = proxyquire('../lib/twitstat', {'request': request});
+        httpRequest = sinon.stub(http, 'request');
     });
-
-    before(function () {
-        server = sinon.fakeServer.create();
-    });
-
     after(function () {
-        server.restore();
+        http.request.restore();
     });
 
     it('Should Get Location Data', done => {
-        var callback = sinon.spy();
-        console.log(server);
+        let response = new passThrough();
+        response.write(locationData);
+        response.end();
 
-        server.requests[0].respond(
-            200,
-            {"Content-Type": "application/json"},
-            JSON.stringify(locationMockData)
-        );
+        let request = new passThrough();
+        httpRequest.callsArgWith(1, response).returns(request);
 
         service.GetLocation('12345').then((location: ILocation) => {
-            console.log(location);
-            done();
-        });
+            httpRequest.called.should.be.equal(true);
+            location.should.not.be.empty;
+            assert.deepEqual(location, JSON.parse(locationData));
 
-        assert(callback.calledOnce);
-    });
-
-    it('should report a LOW popularity when given url is shared less than 10 times', function (done) {
-        var expectedEndpoint = 'http://urls.api.twitter.com/1/urls/count.json?url=some-url.com';
-        var body = JSON.stringify({
-            count: 9,
-            url: "http://some-url.com/"
-        });
-        request.arguments(expectedEndpoint).yields(null, null, body);
-
-        twitstat.getPopularity('some-url.com', function (err, data) {
-            expect(err).to.be.null;
-            expect(data).to.equal(JSON.stringify({
-                "url": "http://some-url.com/",
-                "popularity": "LOW"
-            }));
             done();
         });
     });
 
     /*
-    it('Should Fail to Get Location Data', done => {
-        service.GetLocation(null).then((location: ILocation) => {
-            done();
-        })
+    it('should pass request error to callback', done => {
+        var expected = 'error';
+        var request = new passThrough();
+        httpRequest.returns(request);
+
+        service.GetLocation('12345').then(() => {
+            console.log('success');
+        }).catch((error: any) => {
+            httpRequest.called.should.be.equal(true);
+            assert.equal(error, expected);
+
+            done(error);
+        });
+
+        request.emit('error', expected);
     });
     */
 });

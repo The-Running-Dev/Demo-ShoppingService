@@ -6,7 +6,7 @@ export class ValidationError {
     Type: ErrorType;
 
     constructor(message?: string, type?: ErrorType) {
-        this.Message = message || '';
+        this.Message = (message != null) ? message : '';
         this.Type = (type != null ) ? type :ErrorType.Unknown;
     }
 }

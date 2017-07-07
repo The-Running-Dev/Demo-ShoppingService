@@ -1,17 +1,34 @@
 import { Context } from 'aws-lambda';
 
-import { IEventPayload } from './models/payload.model';
+import { ClothesService } from './services/clothes.service';
 import { ICallback } from './models/callback.model';
+import { IEventPayload } from './models/payload.model';
+import { IResponsePayload } from './models/response-payload.model';
+import { LocationService } from './services/location.service';
+import { ValidationResult } from './models/validation-result.model';
 import { ValidationService } from './services/validation.service';
+import { WeatherService } from './services/weather.service';
 
-export function GetSuggestion(payload: IEventPayload, context: Context, callback: ICallback) {
-    let input: IEventPayload = payload || {ZipCode: ''};
+export function Suggest(payload: IEventPayload, context: Context, callback: ICallback) {
+    let input: IEventPayload = (payload != null) ? payload : {ZipCode: ''};
     let validationService = new ValidationService();
+    let locationService = new LocationService();
+    let clothsService = new ClothesService(new WeatherService(validationService, locationService));
 
-    validationService.ValidateZipCode(input.ZipCode).then(() => {
-        callback(null, {
-            Message: `Zip Code: ${input.ZipCode}`,
-            Event: payload
+    validationService.ValidateZipCode(input.ZipCode).then((validationResult: ValidationResult) => {
+        if (!validationResult.IsValid) {
+            callback(validationResult.Error, null);
+
+            return;
+        }
+
+        clothsService.GetSuggestion(input.ZipCode).then((payload: IResponsePayload) => {
+            console.log('jere');
+            payload.Message = `How are things in ${payload.Location.city}?`;
+            payload.Message += ` The current temperature is ${payload.Weather.temp} degrees.`
+            payload.Message += ` ${payload.WardrobeItem.Season}, may we suggest ${payload.WardrobeItem.Name}`;
+
+            callback(null, payload);
         });
     });
 }

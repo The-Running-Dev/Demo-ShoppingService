@@ -9,9 +9,9 @@ plugins:
 
 functions:
   GetSuggestion:
-    handler: shopping-service.GetSuggestion
+    handler: shopping-service.Suggest
 
     events:
      - http:
-        path: shopping
+        path: suggest
         method: get
