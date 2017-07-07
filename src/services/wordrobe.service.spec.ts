@@ -1,12 +1,12 @@
-import { WardrobeService } from './wordrobe.service';
+import { ApiPayload } from '../models/api-payload.model';
 import { Season } from '../models/season.enum';
 import { WeatherService } from './weather.service';
-import { IResponsePayload } from '../models/response-payload.model';
+import { WardrobeService } from './wordrobe.service';
 
 describe('WardrobeService', () => {
     const mockWeatherService = <WeatherService> {
-        GetWeather(zipCode: string): Promise<IResponsePayload> {
-            return Promise.resolve(<IResponsePayload>{});
+        GetWeather(zipCode: string): Promise<ApiPayload> {
+            return Promise.resolve(<ApiPayload>{});
         }
     };
     let service = new WardrobeService(mockWeatherService);

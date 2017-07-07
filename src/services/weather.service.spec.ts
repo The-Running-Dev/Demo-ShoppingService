@@ -7,6 +7,7 @@ import { ValidationService } from './validation.service';
 import { LocationService } from './location.service';
 import { ILocation } from '../models/location.model';
 import { IResponsePayload } from '../models/response-payload.model';
+import { ApiPayload } from '../models/api-payload.model';
 
 const passThrough = require('stream').PassThrough;
 const weatherMockData = require('../data/weather.json');
@@ -42,7 +43,7 @@ describe('WeatherService', () => {
         let request = new passThrough();
         httpRequest.callsArgWith(1, response).returns(request);
 
-        service.GetWeather(zipCode).then((payload: IResponsePayload) => {
+        service.GetWeather(zipCode).then((payload: ApiPayload) => {
             httpRequest.called.should.be.equal(true);
             payload.should.not.be.empty;
             assert.deepEqual(payload.Weather, weatherMockData.main);

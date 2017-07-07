@@ -44,9 +44,7 @@ describe('GetLocation', () => {
         var request = new passThrough();
         httpRequest.returns(request);
 
-        service.GetLocation(zipCode).then(() => {
-            console.log('success');
-        }).catch((error: any) => {
+        service.GetLocation(zipCode).catch((error: any) => {
             httpRequest.called.should.be.equal(true);
             assert.equal(error, expected);
 

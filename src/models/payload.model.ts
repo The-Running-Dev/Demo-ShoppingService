@@ -1,3 +1,7 @@
+import { IQueryParameters } from './query-parameters.model';
+
 export interface IEventPayload {
-    ZipCode: string;
+    method: string;
+
+    queryStringParameters: IQueryParameters;
 }

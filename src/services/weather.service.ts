@@ -1,13 +1,14 @@
 import { ILocation } from '../models/location.model';
 const http = require('http');
 
+import { ApiPayload } from '../models/api-payload.model';
 import { IWeather } from '../models/weather.model';
 import { LocationService } from './location.service';
 import { OpenWeatherAPIKey } from '../.env';
 import { ValidationService } from './validation.service';
 import { IResponsePayload } from '../models/response-payload.model';
 
-// Provides weather related functions
+// Provides Weather related functions
 // by leveraging the OpenWeatherMap API
 export class WeatherService {
     public validationService: ValidationService;
@@ -18,11 +19,11 @@ export class WeatherService {
         this.locationService = locationService;
     }
 
-    // Gets the current weather based on the provided zip code
-    public GetWeather(zipCode: string): Promise<IResponsePayload> {
+    // Gets the current Weather based on the provided zip code
+    public GetWeather(zipCode: string): Promise<ApiPayload> {
         return new Promise((resolve: any, reject: any) => {
             this.locationService.GetLocation(zipCode).then((location: ILocation) => {
-                let payload: IResponsePayload = { Message: '', Location: location, WardrobeItem: null, Weather: null };
+                let payload = new ApiPayload(null, location);
 
                 this.validationService.ValidateCoordinates(location.lat, location.lng).then(() => {
                     var req = http.request({

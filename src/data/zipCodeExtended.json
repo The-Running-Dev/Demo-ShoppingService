@@ -1,3 +1,5 @@
 {
-  "ZipCode": "77008-6558"
+  "queryStringParameters": {
+    "ZipCode": "77008-6558"
+  }
 }

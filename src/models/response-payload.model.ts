@@ -1,13 +1,7 @@
-import { ILocation } from './location.model';
-import { IWeather } from './weather.model';
-import { WardrobeItem } from './wardrobe-item.model';
+import { ApiPayload } from './api-payload.model';
 
 export interface IResponsePayload {
-    Message: string;
+    statusCode: number;
 
-    Location: ILocation;
-
-    Weather: IWeather;
-
-    WardrobeItem: WardrobeItem;
+    body: ApiPayload;
 }

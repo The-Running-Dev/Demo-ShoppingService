@@ -10,10 +10,13 @@ plugins:
 functions:
   suggest:
     handler: shopping-service.suggestWardrobe
+    timeout: 20
+    memorySize: 256
     name: demo-shopping-service
-    description: Provides wardrobe suggestions based on a given location
+    description: Provides wardrobe suggestions based on a given Location
 
     events:
      - http:
         path: suggest
         method: get
+        cors: true
