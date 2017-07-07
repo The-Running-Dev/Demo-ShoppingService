@@ -24,13 +24,10 @@ export function suggestWardrobe(payload: IEventPayload, context: Context, callba
             return;
         }
 
-        console.log('validation passed');
-
         wardrobeService.GetSuggestion(input.ZipCode).then((payload: IResponsePayload) => {
-            console.log('hjere');
             payload.Message = `How are things in ${payload.Location.city}?`;
             payload.Message += ` The current temperature is ${payload.Weather.temp} degrees.`
-            payload.Message += ` ${payload.WardrobeItem.Season}, may we suggest ${payload.WardrobeItem.Name}`;
+            payload.Message += ` ${payload.WardrobeItem.Season} may we suggest ${payload.WardrobeItem.Name}?`;
 
             callback(null, payload);
         });

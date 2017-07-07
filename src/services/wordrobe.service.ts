@@ -1,4 +1,5 @@
-import { AutumnItem, SpringItem, SummerItem, WinterItem } from '../models/season-Items';
+import { AutumnWardrobe, SpringWardrobe, SummerWardrobe, WinterWardrobe } from '../models/wardrobe.enums';
+import { AutumnItem, SpringItem, SummerItem, WinterItem } from '../models/season-item,models';
 import { IResponsePayload } from '../models/response-payload.model';
 import { WardrobeItem } from '../models/wardrobe-item.model';
 import { WeatherService } from './weather.service';
@@ -14,7 +15,6 @@ export class WardrobeService {
 
     // Get wardrobe item suggestion based on the given zip code
     public GetSuggestion(zipCode: string): Promise<IResponsePayload> {
-        console.log('I should not be here');
         return new Promise((resolve: any) => {
             // First get the weather for the zip code
             this.weatherService.GetWeather(zipCode).then((payload: IResponsePayload) => {
@@ -41,26 +41,29 @@ export class WardrobeService {
     }
 
     public GetSpringItem(): WardrobeItem {
-        return new SpringItem(this.GetRandomSeasonItem(SpringItem))
+        return new SpringItem(this.GetRandomSeasonItem(SpringWardrobe))
     }
 
     public GetSummerItem(): WardrobeItem {
-        return new SummerItem(this.GetRandomSeasonItem(SummerItem))
+        return new SummerItem(this.GetRandomSeasonItem(SummerWardrobe))
     }
 
     public GetAutumnItem(): WardrobeItem {
-        return new AutumnItem(this.GetRandomSeasonItem(AutumnItem))
+        return new AutumnItem(this.GetRandomSeasonItem(AutumnWardrobe))
     }
 
     public GetWinterItem(): WardrobeItem {
-        return new WinterItem(this.GetRandomSeasonItem(WinterItem))
+        return new WinterItem(this.GetRandomSeasonItem(WinterWardrobe))
     }
 
     // Gets a random wardrobe item from the provided season item enum
-    public GetRandomSeasonItem(seasonItemEnum: any): string {
-        let enumLength = (Object.keys(seasonItemEnum).length / 2) - 1;
-        var item = Math.floor(Math.random() * enumLength) + 0;
+    public GetRandomSeasonItem(itemEnum: any): string {
+        // Get the keys from the enum, but filter only the numbers
+        let keys = Object.keys(itemEnum).map(n => parseInt(n)).filter(n => !isNaN(n));
+        let min = Math.min(...keys);
+        let max = Math.max(...keys);
+        let index = Math.floor(Math.random() * (max - min) + min);
 
-        return seasonItemEnum[item];
+        return itemEnum[index];
     }
 }

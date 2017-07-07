@@ -20,6 +20,6 @@ module.exports = function (config) {
         logLevel: config.LOG_INFO,
         browsers: ['PhantomJS'],
         autoWatch: true,
-        singleRun: false
+        singleRun: true
     });
 }

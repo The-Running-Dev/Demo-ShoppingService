@@ -6,4 +6,3 @@ node_modules/
 
 src/**/.js
 src/**/.map.js
-src/.env.ts
