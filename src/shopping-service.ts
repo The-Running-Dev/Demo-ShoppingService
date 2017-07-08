@@ -32,7 +32,8 @@ export function suggestWardrobe(payload: IEventPayload, context: Context, callba
 
             let payload: IResponsePayload = {
                 statusCode: 200,
-                body: JSON.stringify(apiPayload)
+                body: JSON.stringify(apiPayload),
+                headers: {"Access-Control-Allow-Origin": "*"}
             };
 
             callback(null, payload);
