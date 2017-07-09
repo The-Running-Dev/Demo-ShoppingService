@@ -6,7 +6,8 @@ import { IWeather } from '../models/weather.model';
 import { LocationService } from './location.service';
 import { OpenWeatherAPIKey } from '../.env';
 import { ValidationService } from './validation.service';
-import { IResponsePayload } from '../models/response-payload.model';
+import { ErrorType, ErrorTypeMessage } from '../models/error-type.enums';
+import { ValidationError } from '../models/validation-error.model';
 
 // Provides Weather related functions
 // by leveraging the OpenWeatherMap API
@@ -37,15 +38,22 @@ export class WeatherService {
                         response.on('end', function () {
                             let jsonData = <any>JSON.parse(data);
                             payload.Weather = <IWeather>(jsonData.main);
-                            resolve(payload);
+                            return resolve(payload);
                         });
                     }).on('error', response => {
-                        reject(response);
+                        if (response.status == 404) {
+                            return reject(new ValidationError(ErrorTypeMessage.CouldNotGetWeather, ErrorType.CouldNotGetWeather));
+                        }
+                        else {
+                            return reject(new ValidationError(ErrorTypeMessage.Unknown, ErrorType.Unknown));
+                        }
                     });
 
                     req.end();
-                })
-            })
+                });
+            }).catch((error: any) => {
+                return reject(error);
+            });
         });
     }
 }

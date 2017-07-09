@@ -3,6 +3,7 @@ export enum ErrorType {
     InvalidCoordinates = 1,
     InvalidLatitude = 2,
     InvalidLongitude = 3,
+    CouldNotGetWeather = 4,
     Unknown = -1
 }
 
@@ -11,5 +12,6 @@ export enum ErrorTypeMessage {
     InvalidCoordinates = 'Invalid Coordinates',
     InvalidLatitude = 'Invalid Latitude ',
     InvalidLongitude = 'Invalid Longitude',
+    CouldNotGetWeather = 'Could Not Get the Weather',
     Unknown = 'Unknown'
 }

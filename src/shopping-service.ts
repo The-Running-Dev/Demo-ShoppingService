@@ -20,8 +20,12 @@ export function suggestWardrobe(payload: IEventPayload, context: Context, callba
 
     validationService.ValidateZipCode(zipCode).then((validationResult: ValidationResult) => {
         if (!validationResult.IsValid) {
-            callback(validationResult.Error.Message, null);
-
+            let payload: IResponsePayload = {
+                statusCode: 400,
+                body: validationResult.Error.Message,
+                headers: {"Access-Control-Allow-Origin": "*"}
+            };
+            callback(null, payload);
             return;
         }
 
@@ -36,6 +40,13 @@ export function suggestWardrobe(payload: IEventPayload, context: Context, callba
                 headers: {"Access-Control-Allow-Origin": "*"}
             };
 
+            callback(null, payload);
+        }).catch((error: any) => {
+            let payload: IResponsePayload = {
+                statusCode: 400,
+                body: JSON.stringify(error),
+                headers: {"Access-Control-Allow-Origin": "*"}
+            };
             callback(null, payload);
         });
     });

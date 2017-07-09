@@ -1,7 +1,9 @@
+import { ValidationError } from '../models/validation-error.model';
 const http = require('http');
 
 import { ILocation } from '../models/location.model';
 import { ZipCodeAPIKey } from '../.env';
+import { ErrorType, ErrorTypeMessage } from '../models/error-type.enums';
 
 // Provides location related functions
 // by leveraging the ZipCodeApi.com to get the location data
@@ -17,10 +19,15 @@ export class LocationService {
                     data += chunk;
                 });
                 response.on('end', function () {
-                    resolve(<ILocation><any>JSON.parse(data));
+                    return resolve(<ILocation><any>JSON.parse(data));
                 });
-            }).on('error', response => {
-                reject(response);
+            }).on('error', (response: any) => {
+                if (response.status == 404) {
+                    return reject(new ValidationError(ErrorTypeMessage.InvalidZipCode, ErrorType.InvalidZipCode));
+                }
+                else {
+                    return reject(new ValidationError(ErrorTypeMessage.Unknown, ErrorType.Unknown));
+                }
             });
 
             req.end();

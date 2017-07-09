@@ -1,7 +1,6 @@
 import { ApiPayload } from '../models/api-payload.model';
 import { AutumnWardrobe, SpringWardrobe, SummerWardrobe, WinterWardrobe } from '../models/wardrobe.enums';
 import { AutumnItem, SpringItem, SummerItem, WinterItem } from '../models/season-item,models';
-import { IResponsePayload } from '../models/response-payload.model';
 import { WardrobeItem } from '../models/wardrobe-item.model';
 import { WeatherService } from './weather.service';
 
@@ -16,7 +15,7 @@ export class WardrobeService {
 
     // Get wardrobe item suggestion based on the given zip code
     public GetSuggestion(zipCode: string): Promise<ApiPayload> {
-        return new Promise((resolve: any) => {
+        return new Promise((resolve: any, reject: any) => {
             // First get the weather for the zip code
             this.weatherService.GetWeather(zipCode).then((payload: ApiPayload) => {
                 let temperature = parseInt(payload.Weather.temp);
@@ -37,6 +36,8 @@ export class WardrobeService {
                     payload.WardrobeItem = this.GetSummerItem();
                     return resolve(payload);
                 }
+            }).catch((error: any) => {
+                return reject(error);
             });
         });
     }
