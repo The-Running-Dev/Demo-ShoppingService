@@ -1,6 +1,6 @@
 {
   "name": "demo-shopping-service",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Provides shopping suggestions based on a given location",
   "main": "src/shopping-service.js",
   "directories": {
