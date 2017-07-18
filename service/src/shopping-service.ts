@@ -11,6 +11,10 @@ import { WeatherService } from './services/weather.service';
 import { WardrobeService } from './services/wordrobe.service';
 import { ApiSuccessPayload } from './models/api-success-payload.model';
 import { ApiFailurePayload } from './models/api-failure-payload.model';
+import { LocationApiData } from './models/location-api-data.model';
+import { ValidationError } from './models/validation-error.model';
+import { ErrorTypeMessage } from './models/error-type-message.model';
+import { ErrorType } from './models/error-type.enum';
 
 // Given a ZipCode, it gets the current Weather
 // and suggests an item based on the temperature
@@ -24,8 +28,7 @@ export function suggestWardrobe(payload: IEventPayload, context: Context, callba
 
     validationService.ValidateZipCode(zipCode).then((validationResult: ValidationResult) => {
         if (!validationResult.IsValid) {
-            callback(new ApiFailurePayload(validationResult.Error), null);
-
+            callback(null, new ApiFailurePayload(validationResult.Error));
             return;
         }
 
@@ -35,8 +38,9 @@ export function suggestWardrobe(payload: IEventPayload, context: Context, callba
             data.Message += ` ${data.WardrobeItem.Season} may we suggest ${data.WardrobeItem.Name}?`;
 
             callback(null, new ApiSuccessPayload(data));
-        }).catch((error: any) => {
-            callback(new ApiFailurePayload(error), null);
+        }).catch(() => {
+            let error = new ValidationError(ErrorTypeMessage.InvalidZipCode, ErrorType.InvalidZipCode);
+            callback(null, new ApiFailurePayload(error));
         });
     });
 }

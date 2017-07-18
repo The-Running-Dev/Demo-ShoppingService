@@ -12,6 +12,9 @@ import { ValidationService } from './services/validation.service';
 import { ValidationResult } from './models/validation-result.model';
 import { SummerItem } from './models/season-item,models';
 import { WardrobeService } from './services/wordrobe.service';
+import { ValidationError } from './models/validation-error.model';
+import { ErrorType } from './models/error-type.enum';
+import { LocationApiData } from './models/location-api-data.model';
 
 const weatherMockData = require('./data/weather.json');
 
@@ -29,9 +32,23 @@ describe('Suggest', () => {
         WardrobeItem: new SummerItem('some sandals')
     };
 
+    it('Should Return Error on Empty Zip Code', done => {
+        suggestWardrobe(null, null, (error: any, payload: ApiFailurePayload) => {
+            payload.body.should.not.be.empty;
+            payload.body.should.contain(ErrorTypeMessage.InvalidZipCode);
+
+            done();
+        });
+    });
+
     it('Should Return Error on Invalid Zip Code', done => {
-        suggestWardrobe(null, null, (payload: ApiFailurePayload) => {
-            payload.body.should.not.be.null;
+        let eventPayload: IEventPayload = {
+            method: 'get',
+            queryStringParameters: <IQueryParameters>{ ZipCode: '99999' }
+        };
+
+        suggestWardrobe(eventPayload, null, (error: any, payload: ApiFailurePayload) => {
+            payload.body.should.not.be.empty;
             payload.body.should.contain(ErrorTypeMessage.InvalidZipCode);
 
             done();

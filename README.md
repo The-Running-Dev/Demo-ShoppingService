@@ -34,6 +34,7 @@ Install with: ```npm i demo-shopping-service```
 
     ```serverless invoke -f suggest -l -p .\src\data\zipCode.json```
     ```serverless invoke -f suggest -l -p .\src\data\zipCodeExtended.json```
+    ```serverless invoke -f suggest -l -p .\src\data\zipCodeInvalid.json```
 
 #### Client (Angular)
 1. Change directory to client: ```cd .\client```

@@ -40,11 +40,11 @@ export class AppComponent {
 
         try {
             if (response.status == 400) {
-                let error = <any>response.text();
+                let responseJson = <any>response.json();
 
                 handledResponse = {
                     Code: 400,
-                    Message: (error !== '{}') ? error : 'Ooops! I don\'t know...'
+                    Message: responseJson.Message
                 };
             }
             else if (response.status == 404) {
