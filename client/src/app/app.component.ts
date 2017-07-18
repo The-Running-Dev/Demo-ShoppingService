@@ -15,7 +15,7 @@ export class AppComponent {
     public Message: string;
     public ErrorMessage: string;
 
-    private _apiUrl: string = 'https://7x4h9qwwi6.execute-api.us-east-1.amazonaws.com/production/suggest';
+    private _apiUrl: string = 'https://9arrta3i4i.execute-api.us-east-1.amazonaws.com/dev/suggest'
 
     constructor(private http: Http) {
         this.zipCode = '78748';
