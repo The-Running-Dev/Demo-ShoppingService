@@ -2,7 +2,7 @@
 
 AWS lambda function that provides wardrobe suggestions based on the current weather in a location.
 
-#### [Online Demo](http://plnkr.co/edit/PkmLCK6wBdesWV1b60kB)
+#### [Online Demo](http://embed.plnkr.co/EibcmJ/)
 
 #### Running Locally
 1. Install the NPM package: ```npm i demo-shopping-service```
