@@ -1,3 +1,4 @@
+/*
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
@@ -55,4 +56,4 @@ describe('Suggest', () => {
             done();
         });
     });
-});
+});*/

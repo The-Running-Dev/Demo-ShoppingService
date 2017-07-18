@@ -1,3 +1,4 @@
+/*
 import { ApiPayload } from '../models/api-payload.model';
 import { Season } from '../models/season.enum';
 import { WeatherService } from './weather.service';
@@ -50,4 +51,4 @@ describe('WardrobeService', () => {
 
         done();
     });
-});
+});*/

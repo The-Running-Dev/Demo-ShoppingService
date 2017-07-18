@@ -4,7 +4,7 @@ const http = require('http');
 import { ApiPayload } from '../models/api-payload.model';
 import { IWeather } from '../models/weather.model';
 import { LocationService } from './location.service';
-import { OpenWeatherAPIKey } from '../.env';
+import { OpenWeatherApi } from '../.env';
 import { ValidationService } from './validation.service';
 import { ErrorType, ErrorTypeMessage } from '../models/error-type.enums';
 import { ValidationError } from '../models/validation-error.model';
@@ -25,12 +25,10 @@ export class WeatherService {
         return new Promise((resolve: any, reject: any) => {
             this.locationService.GetLocation(zipCode).then((location: ILocation) => {
                 let payload = new ApiPayload(null, location);
+                let api = new OpenWeatherApi(zipCode);
 
                 this.validationService.ValidateCoordinates(location.lat, location.lng).then(() => {
-                    var req = http.request({
-                        host: `api.openweathermap.org`,
-                        path: `/data/2.5/weather?lat=${location.lat}&lon=${location.lng}&units=imperial&appid=${OpenWeatherAPIKey}`
-                    }, (response: any) => {
+                    var req = http.get(api.EndPoint, (response: any) => {
                         var data = '';
                         response.on('data', (chunk: any) => {
                             data += chunk;

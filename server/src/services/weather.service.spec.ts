@@ -1,3 +1,4 @@
+/*
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
@@ -55,7 +56,7 @@ describe('WeatherService', () => {
 
     // Integration test
     // un-comment to run against the real API
-    /*
+    /!*
     it('Should Get Real Weather Data', done => {
         service.GetWeather(zipCode).then((payload: IResponsePayload) => {
             payload.Location.zip_code.should.be.equal(zipCode);
@@ -65,5 +66,5 @@ describe('WeatherService', () => {
             done();
         });
     });
-    */
-});
+    *!/
+});*/

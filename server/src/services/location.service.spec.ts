@@ -15,14 +15,14 @@ describe('GetLocation', () => {
     let zipCode = '12065';
     const service = new LocationService();
 
-    before(function () {
+    /*before(function () {
         httpRequest = sinon.stub(http, 'request');
     });
     after(function () {
         http.request.restore();
-    });
+    });*/
 
-    it('Should Get Mock Location Data', done => {
+    /*it('Should Get Mock Location Data', done => {
         let response = new passThrough();
         response.write(JSON.stringify(locationMockData));
         response.end();
@@ -37,9 +37,16 @@ describe('GetLocation', () => {
 
             done();
         });
+    });*/
+
+    it('Should Get Real Location Data', done => {
+        service.GetLocation('99999').catch((error: any) => {
+            console.log(error);
+            done();
+        });
     });
 
-    it('Should Pass Request Error to Callback', done => {
+    /*it('Should Pass Request Error to Callback', done => {
         var expected = 'error';
         var request = new passThrough();
         httpRequest.returns(request);
@@ -52,5 +59,5 @@ describe('GetLocation', () => {
         });
 
         request.emit('error', expected);
-    });
+    });*/
 });

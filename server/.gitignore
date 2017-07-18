@@ -1,0 +1,8 @@
+.vscode/
+.serverless/
+.webpack/
+.idea/
+node_modules/
+
+src/**/.js
+src/**/.map.js
