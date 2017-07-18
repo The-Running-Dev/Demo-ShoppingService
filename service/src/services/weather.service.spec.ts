@@ -1,14 +1,13 @@
-/*
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import { ValidationResult } from '../models/validation-result.model';
-import { WeatherService } from './weather.service';
-import { ValidationService } from './validation.service';
+import { DataPayload } from '../models/data-payload.model';
+import { LocationApiData } from '../models/location-api-data.model';
 import { LocationService } from './location.service';
-import { ILocation } from '../models/location.model';
-import { IResponsePayload } from '../models/response-payload.model';
-import { ApiPayload } from '../models/api-payload.model';
+import { StringService } from './string.service';
+import { ValidationResult } from '../models/validation-result.model';
+import { ValidationService } from './validation.service';
+import { WeatherService } from './weather.service';
 
 const passThrough = require('stream').PassThrough;
 const weatherMockData = require('../data/weather.json');
@@ -28,11 +27,14 @@ describe('WeatherService', () => {
         }
     };
     const mockLocationService = <LocationService> {
-        GetLocation(zipCode: string): Promise<ILocation> {
-            return Promise.resolve(locationMockData);
+        GetLocation(zipCode: string): Promise<LocationApiData> {
+            return Promise.resolve(<LocationApiData> {
+                Location: locationMockData
+            });
         }
     };
-    const service = new WeatherService(mockValidationService, mockLocationService);
+    const stringService = new StringService();
+    const service = new WeatherService(mockValidationService, mockLocationService, stringService);
 
     it('Should Get Mock Weather Data', done => {
         httpRequest = sinon.stub(http, 'request');
@@ -44,7 +46,7 @@ describe('WeatherService', () => {
         let request = new passThrough();
         httpRequest.callsArgWith(1, response).returns(request);
 
-        service.GetWeather(zipCode).then((payload: ApiPayload) => {
+        service.GetWeather(zipCode).then((payload: DataPayload) => {
             httpRequest.called.should.be.equal(true);
             payload.should.not.be.empty;
             assert.deepEqual(payload.Weather, weatherMockData.main);
@@ -56,9 +58,9 @@ describe('WeatherService', () => {
 
     // Integration test
     // un-comment to run against the real API
-    /!*
+    /*
     it('Should Get Real Weather Data', done => {
-        service.GetWeather(zipCode).then((payload: IResponsePayload) => {
+        service.GetWeather(zipCode).then((payload: DataPayload) => {
             payload.Location.zip_code.should.be.equal(zipCode);
             payload.should.not.be.empty;
             payload.Weather.should.not.be.empty;
@@ -66,5 +68,5 @@ describe('WeatherService', () => {
             done();
         });
     });
-    *!/
-});*/
+    */
+});

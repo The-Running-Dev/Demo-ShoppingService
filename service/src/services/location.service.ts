@@ -1,37 +1,44 @@
-import { ValidationError } from '../models/validation-error.model';
+import { LocationApiData } from '../models/location-api-data.model';
+
 const http = require('http');
 
 import { ILocation } from '../models/location.model';
-import { ZipCodeApi } from '../.env';
-import { ErrorType, ErrorTypeMessage } from '../models/error-type.enums';
+import { ErrorType } from '../models/error-type.enum';
+import { ErrorTypeMessage } from '../models/error-type-message.model';
+import { StringService } from './string.service';
+import { ValidationError } from '../models/validation-error.model';
+import { ZipCodeApiSettings } from '../api/zip-code-api-settings.model';
 
 // Provides location related functions
 // by leveraging the ZipCodeApi.com to get the location data
 export class LocationService {
-    public GetLocation(zipCode: string): Promise<ILocation> {
-        return new Promise((resolve: any, reject: any) => {
-            let api = new ZipCodeApi(zipCode);
-            console.log(api.EndPoint);
+    public constructor(stringService: StringService) {
+        this._stringService = stringService;
+    }
 
-            var req = http.get(api.EndPoint, (response: any) => {
-                var data = '';
+    public GetLocation(zipCode: string): Promise<LocationApiData> {
+        return new Promise((resolve: any, reject: any) => {
+            let apiUrl = this._stringService.Format(ZipCodeApiSettings.EndPointUrl, ZipCodeApiSettings.ApiKey, zipCode);
+
+            let request = http.get(apiUrl, (response: any) => {
+                let data = '';
                 response.on('data', (chunk: any) => {
                     data += chunk;
                 });
                 response.on('end', function () {
-                    return resolve(<ILocation><any>JSON.parse(data));
+                    return resolve(<LocationApiData> {
+                        Location: <ILocation><any>JSON.parse(data)
+                    });
                 });
             }).on('error', (response: any) => {
-                console.log(response);
-                if (response.status == 404) {
-                    return reject(new ValidationError(ErrorTypeMessage.InvalidZipCode, ErrorType.InvalidZipCode));
-                }
-                else {
-                    return reject(new ValidationError(ErrorTypeMessage.Unknown, ErrorType.Unknown));
-                }
+                return reject(<LocationApiData> {
+                    Error: new ValidationError(ErrorTypeMessage.InvalidZipCode, ErrorType.InvalidZipCode)
+                });
             });
 
-            req.end();
+            request.end();
         });
     }
+
+    private _stringService: StringService;
 }

@@ -1,13 +1,17 @@
-import { ILocation } from '../models/location.model';
+import { OpenWeatherApiSettings } from '../api/open-weather-api-settings.model';
+
 const http = require('http');
 
-import { ApiPayload } from '../models/api-payload.model';
+import { DataPayload } from '../models/data-payload.model';
+import { ILocation } from '../models/location.model';
 import { IWeather } from '../models/weather.model';
 import { LocationService } from './location.service';
-import { OpenWeatherApi } from '../.env';
-import { ValidationService } from './validation.service';
-import { ErrorType, ErrorTypeMessage } from '../models/error-type.enums';
+import { ErrorType } from '../models/error-type.enum';
+import { ErrorTypeMessage } from '../models/error-type-message.model';
+import { StringService } from './string.service';
 import { ValidationError } from '../models/validation-error.model';
+import { ValidationService } from './validation.service';
+import { LocationApiData } from '../models/location-api-data.model';
 
 // Provides Weather related functions
 // by leveraging the OpenWeatherMap API
@@ -15,21 +19,23 @@ export class WeatherService {
     public validationService: ValidationService;
     public locationService: LocationService;
 
-    constructor(validationService: ValidationService, locationService: LocationService) {
+    constructor(validationService: ValidationService, locationService: LocationService, stringService: StringService) {
         this.validationService = validationService;
         this.locationService = locationService;
+        this._stringService = stringService;
     }
 
     // Gets the current Weather based on the provided zip code
-    public GetWeather(zipCode: string): Promise<ApiPayload> {
+    public GetWeather(zipCode: string): Promise<DataPayload> {
         return new Promise((resolve: any, reject: any) => {
-            this.locationService.GetLocation(zipCode).then((location: ILocation) => {
-                let payload = new ApiPayload(null, location);
-                let api = new OpenWeatherApi(zipCode);
+            this.locationService.GetLocation(zipCode).then((locationApiData: LocationApiData) => {
+                let location = locationApiData.Location;
+                let payload = new DataPayload(null, location);
+                let apiUrl = this._stringService.Format(OpenWeatherApiSettings.EndPointUrl, OpenWeatherApiSettings.ApiKey, location.lat, location.lng);
 
                 this.validationService.ValidateCoordinates(location.lat, location.lng).then(() => {
-                    var req = http.get(api.EndPoint, (response: any) => {
-                        var data = '';
+                    let req = http.get(apiUrl, (response: any) => {
+                        let data = '';
                         response.on('data', (chunk: any) => {
                             data += chunk;
                         });
@@ -39,12 +45,7 @@ export class WeatherService {
                             return resolve(payload);
                         });
                     }).on('error', response => {
-                        if (response.status == 404) {
-                            return reject(new ValidationError(ErrorTypeMessage.CouldNotGetWeather, ErrorType.CouldNotGetWeather));
-                        }
-                        else {
-                            return reject(new ValidationError(ErrorTypeMessage.Unknown, ErrorType.Unknown));
-                        }
+                        return reject(new ValidationError(ErrorTypeMessage.CouldNotGetWeather, ErrorType.CouldNotGetWeather));
                     });
 
                     req.end();
@@ -54,4 +55,6 @@ export class WeatherService {
             });
         });
     }
+
+    private _stringService: StringService;
 }

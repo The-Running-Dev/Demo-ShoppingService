@@ -1,7 +1,6 @@
-/*
 import * as chai from 'chai';
 
-import { ErrorType } from '../models/error-type.enums';
+import { ErrorType } from '../models/error-type.enum';
 import { ValidationResult } from '../models/validation-result.model';
 import { ValidationService } from './validation.service';
 
@@ -101,4 +100,4 @@ describe('ValidationService', () => {
             done();
         });
     });
-});*/
+});

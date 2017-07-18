@@ -1,4 +1,5 @@
-import { ErrorType, ErrorTypeMessage } from '../models/error-type.enums';
+import { ErrorType } from '../models/error-type.enum';
+import { ErrorTypeMessage } from '../models/error-type-message.model';
 import { ValidationError } from '../models/validation-error.model'
 import { ValidationResult } from '../models/validation-result.model';
 

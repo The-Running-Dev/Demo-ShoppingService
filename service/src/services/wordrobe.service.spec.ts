@@ -1,13 +1,12 @@
-/*
-import { ApiPayload } from '../models/api-payload.model';
+import { DataPayload } from "src/models/data-payload.model";
 import { Season } from '../models/season.enum';
 import { WeatherService } from './weather.service';
 import { WardrobeService } from './wordrobe.service';
 
 describe('WardrobeService', () => {
     const mockWeatherService = <WeatherService> {
-        GetWeather(zipCode: string): Promise<ApiPayload> {
-            return Promise.resolve(<ApiPayload>{});
+        GetWeather(zipCode: string): Promise<DataPayload> {
+            return Promise.resolve(<DataPayload>{});
         }
     };
     let service = new WardrobeService(mockWeatherService);
@@ -51,4 +50,4 @@ describe('WardrobeService', () => {
 
         done();
     });
-});*/
+});

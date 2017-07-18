@@ -1,20 +1,13 @@
-import { ILocation } from './location.model';
-import { IWeather } from './weather.model';
-import { WardrobeItem } from './wardrobe-item.model';
-
 export class ApiPayload {
-    Message: string;
+    public statusCode: number;
 
-    Location: ILocation;
+    public body: string;
 
-    Weather: IWeather;
+    public headers: any;
 
-    WardrobeItem: WardrobeItem;
-
-    constructor(message?: string, location?: ILocation, weather?: IWeather, item?: WardrobeItem) {
-        this.Message = (message != null) ? message : '';
-        this.Location = (location != null) ? location : null;
-        this.Weather = (weather != null) ? weather : null;
-        this.WardrobeItem = (item != null) ? item : null;
+    constructor(statusCode: number, body: any) {
+        this.statusCode = statusCode;
+        this.body = JSON.stringify(body);
+        this.headers = {"Access-Control-Allow-Origin": "*"};
     }
 }

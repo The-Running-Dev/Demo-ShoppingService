@@ -1,4 +1,4 @@
-import { ErrorType } from './error-type.enums';
+import { ErrorType } from './error-type.enum';
 
 export class ValidationError {
     Message: string;

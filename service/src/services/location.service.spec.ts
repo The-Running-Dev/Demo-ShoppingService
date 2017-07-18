@@ -1,28 +1,29 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import { ILocation } from '../models/location.model';
+import { LocationApiData } from "src/models/location-api-data.model";
 import { LocationService } from './location.service';
+import { StringService } from './string.service';
 
 const passThrough = require('stream').PassThrough;
-const http = require('http');
 const locationMockData = require('../data/location.json');
-
+const http = require('http');
 const assert = chai.assert;
 
 describe('GetLocation', () => {
     let httpRequest: any;
     let zipCode = '12065';
-    const service = new LocationService();
+    const stringService = new StringService();
+    const service = new LocationService(stringService);
 
-    /*before(function () {
+    before(function () {
         httpRequest = sinon.stub(http, 'request');
     });
     after(function () {
         http.request.restore();
-    });*/
+    });
 
-    /*it('Should Get Mock Location Data', done => {
+    it('Should Get Mock Location Data', done => {
         let response = new passThrough();
         response.write(JSON.stringify(locationMockData));
         response.end();
@@ -30,23 +31,16 @@ describe('GetLocation', () => {
         let request = new passThrough();
         httpRequest.callsArgWith(1, response).returns(request);
 
-        service.GetLocation(zipCode).then((location: ILocation) => {
+        service.GetLocation(zipCode).then((apiData: LocationApiData) => {
             httpRequest.called.should.be.equal(true);
-            location.should.not.be.empty;
-            assert.deepEqual(location, locationMockData);
+            apiData.Location.should.not.be.empty;
+            assert.deepEqual(apiData.Location, locationMockData);
 
-            done();
-        });
-    });*/
-
-    it('Should Get Real Location Data', done => {
-        service.GetLocation('99999').catch((error: any) => {
-            console.log(error);
             done();
         });
     });
 
-    /*it('Should Pass Request Error to Callback', done => {
+    it('Should Pass Request Error to Callback', done => {
         var expected = 'error';
         var request = new passThrough();
         httpRequest.returns(request);
@@ -54,10 +48,10 @@ describe('GetLocation', () => {
         service.GetLocation(zipCode).catch((error: any) => {
             httpRequest.called.should.be.equal(true);
             assert.equal(error, expected);
-
-            done();
         });
 
         request.emit('error', expected);
-    });*/
+
+        done();
+    });
 });
