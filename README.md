@@ -20,20 +20,20 @@ Install with: ```npm i demo-shopping-service```
 
 2. Install the servrless NPM package
 
-```npm i serverless -g```
+    ```npm i serverless -g```
 
 3. Configure serverless credentials
 
-```serverless config credentials --provider aws --key AKIAIOSFODNN7EXAMPLE --secret wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY```
+    ```serverless config credentials --provider aws --key AKIAIOSFODNN7EXAMPLE --secret wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY```
 
 4. Deploy
 
-```serverless deploy```
+    ```serverless deploy```
 
 5. Run:
 
-```serverless invoke -f suggest -l -p .\src\data\zipCode.json```
-```serverless invoke -f suggest -l -p .\src\data\zipCodeExtended.json```
+    ```serverless invoke -f suggest -l -p .\src\data\zipCode.json```
+    ```serverless invoke -f suggest -l -p .\src\data\zipCodeExtended.json```
 
 #### Client (Angular)
 1. Change directory to client: ```cd .\client```
