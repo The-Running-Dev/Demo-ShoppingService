@@ -1,0 +1,23 @@
+{
+  "name": "demo-shopping-service",
+  "version": "1.0.4",
+  "description": "Provides shopping suggestions based on a given location",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/The-Running-Dev/Shopping-Service.git"
+  },
+  "keywords": [
+    "api",
+    "shopping",
+    "demo"
+  ],
+  "author": "Ben Richards",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/The-Running-Dev/Shopping-Service/issues"
+  },
+  "homepage": "https://github.com/The-Running-Dev/Shopping-Service#readme"
+}
