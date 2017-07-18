@@ -1,0 +1,23 @@
+<div>
+    <h2>Demo Shopping Service</h2>
+</div>
+<h3>Demo Shopping Service</h3>
+
+AWS lambda function that provides wardrobe suggestions based on the current weather in a location.
+
+<p>
+    <a href="https://github.com/The-Running-Dev/Demo-ShoppingService" target="_blank">GitHub</a>
+    <br/><br/>
+    <a href="https://www.npmjs.com/package/demo-shopping-service" target="_blank">NPM Package</a>
+</p>
+
+<h2>Demo</h2>
+Enter a Zip Code: <input type="text" id="zipCode" name="zipCode" [(ngModel)]="zipCode" (keyup.enter)="GetSuggestion()"
+                         focusElement/>
+<button type="submit" (click)="GetSuggestion()">Suggest</button>
+
+<p>
+    {{Message}}
+</p>
+
+<div class="error" *ngIf="ErrorMessage">{{ErrorMessage}}</div>
