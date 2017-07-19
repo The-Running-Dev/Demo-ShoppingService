@@ -17,6 +17,10 @@ Enter a Zip Code: <input type="text" id="zipCode" name="zipCode" [(ngModel)]="zi
 <button type="submit" (click)="GetSuggestion()">Suggest</button>
 
 <p>
+<strong>Note:</strong> You Will Get <i>Invalid Zip Code</i> if the Zip Code API usage limit is exceeded.
+</p>
+
+<p>
     {{Message}}
 </p>
 

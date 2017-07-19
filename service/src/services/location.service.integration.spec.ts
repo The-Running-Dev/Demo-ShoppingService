@@ -1,3 +1,5 @@
+// Integration tests for LocationService, uncomment to run
+
 /*
 import { ErrorType } from '../models/error-type.enum';
 import { ErrorTypeMessage } from '../models/error-type-message.model';
@@ -18,4 +20,14 @@ describe('GetLocation', () => {
             done();
         });
     });
-});*/
+
+    it('Should Respond with Valid Data on Valid Zip Code', done => {
+        service.GetLocation('12345').then((apiData: LocationApiData) => {
+            apiData.Location.should.not.be.empty;
+            apiData.Error.should.not.be.empty;
+
+            done();
+        });
+    });
+});
+*/

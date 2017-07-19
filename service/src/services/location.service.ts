@@ -30,7 +30,7 @@ export class LocationService {
                         Location: <ILocation><any>JSON.parse(data)
                     });
                 });
-            }).on('error', (response: any) => {
+            }).on('error', () => {
                 return reject(<LocationApiData> {
                     Error: new ValidationError(ErrorTypeMessage.InvalidZipCode, ErrorType.InvalidZipCode)
                 });

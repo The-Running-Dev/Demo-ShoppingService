@@ -39,7 +39,7 @@ export class AppComponent {
         };
 
         try {
-            if (response.status == 400) {
+            if (response.statusCode == 400) {
                 let responseJson = <any>response.json();
 
                 handledResponse = {
@@ -47,13 +47,13 @@ export class AppComponent {
                     Message: responseJson.Message
                 };
             }
-            else if (response.status == 404) {
+            else if (response.statusCode == 404) {
                 handledResponse = {
                     Code: 404,
                     Message: 'Data Not Found'
                 };
             }
-            else if (response.status == 500) {
+            else if (response.statusCode == 500) {
                 let responseJson = <any>response.json();
 
                 handledResponse = {

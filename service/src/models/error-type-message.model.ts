@@ -9,5 +9,7 @@ export class ErrorTypeMessage {
 
     static CouldNotGetWeather: string = 'Could Not Get the Weather';
 
+    static ZipApiUsageLimitExceeded = 'ZipApi usage limit exceeded';
+
     static Unknown: string = 'Unknown';
 }
